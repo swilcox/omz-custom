@@ -1,7 +1,13 @@
-local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
-PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
+function prompt_char {
+    git branch >/dev/null 2>/dev/null && echo 'λ' && return
+    hg root >/dev/null 2>/dev/null && echo 'Њ' && return
+    echo '○'
+}
 
-ZSH_THEME_GIT_PROMPT_PREFIX="git:(%{$fg[red]%}"
+local ret_status="%(?:%{$fg_bold[green]%}●:%{$fg_bold[red]%}●%s)"
+PROMPT='${ret_status}%{$fg[yellow]%}%n@%m%{$fg[white]%}:%{$fg_bold[green]%}${PWD/#$HOME/~} %{$fg[blue]%}$(parse_git_dirty)$(prompt_char)%{$reset_color%} '
+
+ZSH_THEME_GIT_PROMPT_PREFIX=""
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
